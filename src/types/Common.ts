@@ -81,6 +81,6 @@ export interface CollectionPageProperty {
   property: string;
 }
 
-export interface Format {
-  copied_from_pointer: Pointer;
+export interface BlockProperty {
+  title: Array<Array<Array<Array<DateTime | string>> | string>>;
 }

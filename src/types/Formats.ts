@@ -1,17 +1,6 @@
-import { CollectionPageProperty, Format, GalleryCover, ListProperty, Pointer, TableProperty } from "./Common";
+import { CollectionPageProperty, GalleryCover, ListProperty, Pointer, TableProperty } from "./Common";
 
-export interface CollectionFormat extends Format {
-  collection_pointer?: Pointer;
-  collection_cover_position?: number;
-  collection_page_properties?: CollectionPageProperty[];
-}
-
-export interface BlockFormat extends Format {
-  block_locked?: boolean;
-  block_locked_by?: string;
-}
-
-export interface BlockPageFormat extends Format {
+export interface BlockFormat {
   page_cover?: string;
   page_cover_position?: number;
   page_icon?: string;
@@ -19,13 +8,22 @@ export interface BlockPageFormat extends Format {
   page_small_text?: boolean;
   block_locked?: boolean;
   block_locked_by?: string;
+  copied_from_pointer: Pointer;
 }
 
-export interface BlockCollectionViewPageFormat extends Format {
-  block_locked?: boolean;
-  block_locked_by?: string;
-  collection_pointer: Pointer;
-  page_cover_position?: number;
+export interface BlockAliasFormat {
+  alias_pointer: Pointer;
+}
+export interface BlockCalloutFormat {
+  block_color: string;
+  page_icon: string;
+}
+
+export interface CollectionFormat {
+  collection_pointer?: Pointer;
+  collection_cover_position?: number;
+  collection_page_properties?: CollectionPageProperty[];
+  copied_from_pointer: Pointer;
 }
 
 export interface CollectionViewListFormat {

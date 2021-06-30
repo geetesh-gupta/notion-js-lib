@@ -16,9 +16,21 @@ export enum PermissionType {
 
 export enum BlockType {
   Page = "page",
+  Text = "text",
+  Todo = "to_do",
+  Header = "header",
+  BulletedList = "bulleted_list",
+  NumberedList = "numbered_list",
+  Toggle = "toggle",
+  Quote = "quote",
+  Divider = "divider",
+  Alias = "alias",
+  Callout = "callout",
   CollectionView = "collection_view",
   CollectionViewPage = "collection_view_page",
+  Image = "image",
 }
+
 export enum PageCoverType {
   PageCover = "page_cover",
 }

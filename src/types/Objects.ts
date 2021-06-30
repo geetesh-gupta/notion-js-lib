@@ -1,79 +1,11 @@
 import { Permission, Pointer, Query2, DateTime } from "./Common";
 import { BlockType, Table } from "./Enums";
 import {
-  BlockFormat,
   CollectionFormat,
   CollectionViewGalleryFormat,
   CollectionViewListFormat,
-  BlockCollectionViewPageFormat,
   CollectionViewTableFormat,
-  BlockPageFormat,
 } from "./Formats";
-
-export interface Block {
-  id: string;
-  version: number;
-  type: BlockType;
-  view_ids: string[];
-  collection_id: string;
-  format: BlockFormat;
-  permissions: Permission[];
-  created_by: string;
-  created_time: number;
-  last_edited_by: string;
-  last_edited_time: number;
-  parent_id: string;
-  parent_table: string;
-  alive: boolean;
-  copied_from: string;
-  created_by_table: string;
-  created_by_id: string;
-  last_edited_by_table: string;
-  last_edited_by_id: string;
-  space_id: string;
-}
-
-export interface BlockCollectionViewPage {
-  id: string;
-  version: number;
-  type: "collection_view_page";
-  view_ids: string[];
-  collection_id: string;
-  format: BlockCollectionViewPageFormat;
-  permissions: Permission[];
-  created_time: number;
-  last_edited_time: number;
-  parent_id: string;
-  parent_table: string;
-  alive: boolean;
-  copied_from: string;
-  file_ids: string[];
-  created_by_id: string;
-  created_by_table: "notion_user";
-  last_edited_by_table: "notion_user";
-  last_edited_by_id: string;
-  space_id: string;
-}
-
-export interface BlockPage {
-  id: string;
-  version: number;
-  type: string;
-  properties: Array<Array<Array<Array<DateTime | string>> | string>>;
-  content: string[];
-  format: BlockPageFormat;
-  created_time: number;
-  last_edited_time: number;
-  parent_id: string;
-  parent_table: string;
-  alive: boolean;
-  copied_from: string;
-  created_by_table: string;
-  created_by_id: string;
-  last_edited_by_table: string;
-  last_edited_by_id: string;
-  space_id: string;
-}
 
 export interface Space {
   id: string;
