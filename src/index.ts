@@ -38,7 +38,7 @@ function removeCommonIds(inpObj) {
     }, {});
 }
 
-function renderLoadCachedPageChunk(res: LoadCachedPageChunkAPIResp) {
+function renderLoadCachedPageChunkForBlocks(res: LoadCachedPageChunkAPIResp) {
   const blockObj = res.recordMap.block;
   if (!blockObj) return null;
   const blockKeys = Object.keys(blockObj);
@@ -103,18 +103,26 @@ function renderLoadCachedPageChunk(res: LoadCachedPageChunkAPIResp) {
   };
 }
 
+function renderLoadCachedPageChunkForSpaces(res: LoadCachedPageChunkAPIResp) {
+  const blockObj = res.recordMap.space;
+  if (!blockObj) return null;
+  const blockKeys = Object.keys(blockObj);
+  const blocks = blockKeys.map((key) => blockObj[key]);
+  console.log(blockObj);
+}
+
 function main() {
   (async () => {
     try {
       const getSpacesAPIResp = await callAPI<GetSpacesAPIResp, GetSpacesAPIBody>({ api: APIs.GET_SPACES });
       const users = renderGetSpace(getSpacesAPIResp);
-      const user = users.filter((user) => user.email === process.env.EMAIL_ID1)[0];
+      const user = users.filter((user) => user.email === process.env.EMAIL_ID2)[0];
       const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
         api: APIs.LOAD_CACHED_PAGE_CHUNK,
         userId: user.id,
         body: {
           page: {
-            id: parseID("62839414034f4c80800062189be3dc81"),
+            id: parseID("78fcbc9287d44476a7c59332a66b49a6"),
           },
           cursor: { stack: [] },
           limit: 30,
@@ -122,8 +130,8 @@ function main() {
           verticalColumns: false,
         },
       });
-      const resp = renderLoadCachedPageChunk(cachedPageChunkResp);
-      if (resp) console.log(resp.roles);
+      const resp = renderLoadCachedPageChunkForSpaces(cachedPageChunkResp);
+      // if (resp) console.log(resp.roles);
     } catch (e) {
       console.error(e);
     }

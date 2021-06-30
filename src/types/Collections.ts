@@ -1,46 +1,11 @@
-import { Permission, Pointer, Query2, DateTime } from "./Common";
-import { BlockType, Table } from "./Enums";
+import { Pointer, Query2 } from "./Common";
+import { Table } from "./Enums";
 import {
   CollectionFormat,
   CollectionViewGalleryFormat,
   CollectionViewListFormat,
   CollectionViewTableFormat,
 } from "./Formats";
-
-export interface Space {
-  id: string;
-  version: number;
-  name: string;
-  permissions: Permission[];
-  icon: string;
-  beta_enabled: boolean;
-  pages: string[];
-  created_time: number;
-  last_edited_time: number;
-  created_by_id: string;
-  created_by_table: "notion_user";
-  last_edited_by_table: "notion_user";
-  last_edited_by_id: string;
-  plan_type: string;
-  invite_link_enabled: boolean;
-}
-
-export interface SpaceView {
-  id: string;
-  version: number;
-  space_id: string;
-  parent_id: string;
-  parent_table: string;
-  alive: boolean;
-  notify_mobile: boolean;
-  notify_desktop: boolean;
-  notify_email: boolean;
-  visited_templates: string[];
-  sidebar_hidden_templates: string[];
-  created_getting_started: boolean;
-  created_onboarding_templates: boolean;
-  joined: boolean;
-}
 
 export interface Collection {
   id: string;

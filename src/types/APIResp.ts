@@ -1,6 +1,7 @@
 import { Block } from "./Blocks";
 import { Child, ChildObject, Cursor, Result } from "./Common";
-import { NotionUser, UserRoot, UserSettings, SpaceView, Space, Collection, CollectionView } from "./Objects";
+import { NotionUser, UserRoot, UserSettings, Collection, CollectionView } from "./Collections";
+import { Space, SpaceView } from "./Spaces";
 
 export type GetSpacesAPIResp = Child<{
   notion_user: ChildObject<NotionUser>;
