@@ -117,21 +117,23 @@ function main() {
       const getSpacesAPIResp = await callAPI<GetSpacesAPIResp, GetSpacesAPIBody>({ api: APIs.GET_SPACES });
       const users = renderGetSpace(getSpacesAPIResp);
       const user = users.filter((user) => user.email === process.env.EMAIL_ID2)[0];
-      const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
-        api: APIs.LOAD_CACHED_PAGE_CHUNK,
-        userId: user.id,
-        body: {
-          page: {
-            id: parseID("78fcbc9287d44476a7c59332a66b49a6"),
-          },
-          cursor: { stack: [] },
-          limit: 30,
-          chunkNumber: 0,
-          verticalColumns: false,
-        },
-      });
-      const resp = renderLoadCachedPageChunkForSpaces(cachedPageChunkResp);
-      // if (resp) console.log(resp.roles);
+      // const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
+      //   api: APIs.LOAD_CACHED_PAGE_CHUNK,
+      //   userId: user.id,
+      //   body: {
+      //     page: {
+      //       id: parseID("78fcbc9287d44476a7c59332a66b49a6"),
+      //     },
+      //     cursor: { stack: [] },
+      //     limit: 30,
+      //     chunkNumber: 0,
+      //     verticalColumns: false,
+      //   },
+      // });
+      // const resp = renderLoadCachedPageChunkForSpaces(cachedPageChunkResp);
+
+      console.log(getSpacesAPIResp[user.id].space);
+      console.log(getSpacesAPIResp[user.id].space_view);
     } catch (e) {
       console.error(e);
     }

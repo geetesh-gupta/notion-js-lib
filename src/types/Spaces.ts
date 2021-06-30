@@ -32,9 +32,9 @@ export interface SpaceView {
   notify_mobile: boolean;
   notify_desktop: boolean;
   notify_email: boolean;
-  visited_templates: string[];
-  sidebar_hidden_templates: string[];
-  created_getting_started: boolean;
-  created_onboarding_templates: boolean;
+  visited_templates?: string[];
+  sidebar_hidden_templates?: string[];
+  created_getting_started?: boolean;
+  created_onboarding_templates?: boolean;
   joined: boolean;
 }
