@@ -1,8 +1,9 @@
 {
   "name": "notion-js-lib",
   "version": "1.0.0",
-  "description": "",
+  "description": "Javascript library for notion API",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "start": "tsc --watch",
@@ -11,8 +12,12 @@
     "prettier": "prettier src/**/*.{js,ts,tsx,jsx}",
     "prettier:fix": "prettier --write src/**/*.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "notion",
+    "library",
+    "javascript"
+  ],
+  "author": "Geetesh Gupta",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^15.12.5",
