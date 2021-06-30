@@ -1,4 +1,5 @@
-import { Role, PermissionType, PageCoverType, Table } from "./Enums";
+import { CollectionSchema } from "./Collections";
+import { Role, PermissionType, PageCoverType, Table, TxnOperationCommands } from "./Enums";
 
 export interface Child<T> {
   [key: string]: T;
@@ -16,7 +17,7 @@ export interface Object<T> {
 export interface Pointer {
   id: string;
   table: Table;
-  spaceId: string;
+  spaceId?: string; // TODO: spaceId not needed when table === Space. Need to handle separately
 }
 
 export interface Permission {
@@ -83,4 +84,33 @@ export interface CollectionPageProperty {
 
 export interface BlockProperty {
   title: Array<Array<Array<Array<DateTime | string>> | string>>;
+}
+
+export interface Transaction {
+  id: string;
+  spaceId: string;
+  operations: TxnOperation[];
+}
+
+export interface TxnOperation {
+  pointer: Pointer;
+  path: string[];
+  command: TxnOperationCommands;
+  args: TxnArgsClass | number | string;
+}
+
+export interface TxnArgsClass {
+  type?: string;
+  id?: string;
+  version?: number;
+  before?: string;
+  parent_id?: string;
+  parent_table?: string;
+  alive?: boolean;
+  schema?: { [key: string]: CollectionSchema };
+  format?: {
+    collection_pointer?: Pointer;
+    collection_cover_position?: number;
+    collection_page_properties?: CollectionPageProperty[];
+  };
 }

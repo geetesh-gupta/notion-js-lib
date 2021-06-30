@@ -3,19 +3,30 @@ import {
   GetSpacesAPIResp,
   LoadCachedPageChunkAPIResp,
   QueryCollectionAPIResp,
+  SaveTransactionAPIResp,
   SearchAPIResp,
 } from "./types/APIResp";
 import { APIs, callAPI } from "./scripts/api";
-import { filterChildObjectValues, filterUsers, parseID } from "./scripts/notionUtils";
+import {
+  filterChildObjectValues,
+  filterUsers,
+  getAPIBodySetBlockCommand,
+  getAPIBodyToRemoveBlock,
+  parseID,
+} from "./scripts/notionUtils";
 import {
   DeleteBlocksBody,
   GetSpacesAPIBody,
   LoadCachedPageChunkBody,
   QueryCollectionBody,
+  SaveTransactionBody,
   SearchBody,
 } from "./types/APIBody";
 import { uniqueArray } from "./scripts/commonUtils";
 import { config } from "dotenv";
+import { randomUUID } from "crypto";
+import { v4 as uuidv4 } from "uuid";
+
 config();
 
 function removeCommonIds(inpObj) {
@@ -121,6 +132,7 @@ function main() {
       const getSpacesAPIResp = await callAPI<GetSpacesAPIResp, GetSpacesAPIBody>({ api: APIs.GET_SPACES });
       const users = filterUsers(getSpacesAPIResp);
       const user = users.filter((user) => user.email === process.env.EMAIL_ID1)[0];
+      const blockId = parseID("d51cb254f9cf4529b8fc4d080af4cee9");
 
       // const collectionObj = getSpacesAPIResp[user.id].collection;
       // const collections = filterChildObjectValues(collectionObj);
@@ -132,7 +144,7 @@ function main() {
       //   userId: user.id,
       //   body: {
       //     page: {
-      //       id: parseID("72a0e548352e4911a9975a64d27b841a"),
+      //       id: blockId,
       //     },
       //     cursor: { stack: [] },
       //     limit: 30,
@@ -180,30 +192,49 @@ function main() {
       // });
       // console.log(deleteBlockAPIResp);
 
-      const searchAPIResp = await callAPI<SearchAPIResp, SearchBody>({
-        api: APIs.SEARCH,
-        userId: user.id,
-        body: {
-          type: "BlocksInSpace",
-          query: "",
-          filters: {
-            isDeletedOnly: false,
-            excludeTemplates: false,
-            isNavigableOnly: true,
-            requireEditPermissions: false,
-            ancestors: [],
-            createdBy: [],
-            editedBy: ['7fcb51d4-8bba-4ae1-ac9c-06fed9842c84'],
-            lastEditedTime: {},
-            createdTime: {},
-          },
-          sort: "Relevance",
-          limit: 20,
-          spaceId: Object.keys(getSpacesAPIResp[user.id].space)[0],
-        },
-      });
-      console.log(searchAPIResp);
-      // console.log(searchAPIResp.recordMap?.block['d51cb254-f9cf-4529-b8fc-4d080af4cee9']);
+      // const searchAPIResp = await callAPI<SearchAPIResp, SearchBody>({
+      //   api: APIs.SEARCH,
+      //   userId: user.id,
+      //   body: {
+      //     type: "BlocksInSpace",
+      //     query: "",
+      //     filters: {
+      //       isDeletedOnly: false,
+      //       excludeTemplates: false,
+      //       isNavigableOnly: true,
+      //       requireEditPermissions: false,
+      //       ancestors: [],
+      //       createdBy: [],
+      //       editedBy: [user.id],
+      //       lastEditedTime: {},
+      //       createdTime: {},
+      //     },
+      //     sort: "Relevance",
+      //     limit: 20,
+      //     spaceId: Object.keys(getSpacesAPIResp[user.id].space)[0],
+      //   },
+      // });
+      // console.log(searchAPIResp);
+      // console.log(cachedPageChunkResp.recordMap.block[blockId].value.last_edited_time);
+
+      const spaceId = Object.keys(getSpacesAPIResp[user.id].space)[0];
+
+      // TODO: find a way to save transactions. Currently throwing error of unsaved transactions, might be due to random uuid
+      // await callAPI<SaveTransactionAPIResp, SaveTransactionBody>({
+      //   api: APIs.SAVE_TRANSACTIONS,
+      //   userId: user.id,
+      //   body: {
+      //     requestId: uuidv4(),
+      //     transactions: [
+      //       {
+      //         id: uuidv4(),
+      //         spaceId: spaceId,
+      //         operations: [getAPIBodySetBlockCommand(blockId, spaceId, ["lastEditedTime"], 1625046900000)],
+      //       },
+      //     ],
+      //   },
+      // });
+      // console.log(cachedPageChunkResp.recordMap.block[blockId].value.last_edited_time);
     } catch (e) {
       console.error(e);
     }

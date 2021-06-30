@@ -9,6 +9,7 @@ export enum APIs {
   QUERY_COLLECTION = "/queryCollection",
   DELETE_BLOCKS = "/deleteBlocks",
   SEARCH = "/search",
+  SAVE_TRANSACTIONS = "/saveTransactions",
 }
 
 export function getRequestOptions(token: string, userId: string = "") {
@@ -34,7 +35,10 @@ export function callAPI<T, U>({ api, userId, body }: { api; userId?: string; bod
   const requestOptions = getRequestOptions(token, userId);
   // if (body) requestOptions.body = JSON.stringify(body);
   const options = body ? { ...requestOptions, body: JSON.stringify(body) } : requestOptions;
-
+  
+  // @ts-ignore
+  if(api === APIs.SAVE_TRANSACTIONS) console.log(body['transactions'][0]['operations']);
+  
   return new Promise<T>((resolve, reject) => {
     fetch(APIs.BASE_URL + api, options)
       .then((res) => res.json())

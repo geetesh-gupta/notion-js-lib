@@ -4,6 +4,8 @@ import { NotionUser, UserRoot, UserSettings } from "./Objects";
 import { Collection, CollectionView } from "./Collections";
 import { Space, SpaceView } from "./Spaces";
 
+export interface SaveTransactionAPIResp {}
+
 export type GetSpacesAPIResp = Child<GetSpaceAPIRespChild>;
 
 export interface SearchAPIResp {

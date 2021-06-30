@@ -1,3 +1,5 @@
+import { Transaction } from "./Common";
+
 export interface GetSpacesAPIBody {}
 
 export interface LoadCachedPageChunkBody {
@@ -53,7 +55,12 @@ export interface SearchBody {
     createdTime: any;
   };
   sort: string;
-  limit: 20;
+  limit: number;
   spaceId: string;
   source?: string;
+}
+
+export interface SaveTransactionBody {
+  requestId: string;
+  transactions: Transaction[];
 }

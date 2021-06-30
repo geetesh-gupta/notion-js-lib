@@ -5,6 +5,7 @@ export enum Role {
 
 export enum Table {
   Block = "block",
+  Space = "space",
   Collection = "collection",
   SpaceView = "space_view",
 }
@@ -39,4 +40,12 @@ export enum CollectionViewType {
 
 export enum PageCoverType {
   PageCover = "page_cover",
+}
+
+export enum TxnOperationCommands {
+  Update = "update",
+  ListRemove = "listRemove",
+  Set = "set",
+  ListBefore = "listBefore",
+  ListAfter = "listAfter",
 }
