@@ -6,6 +6,21 @@ import { Space, SpaceView } from "./Spaces";
 
 export type GetSpacesAPIResp = Child<GetSpaceAPIRespChild>;
 
+export interface SearchAPIResp {
+  results: {
+    id: string;
+    isNavigable: boolean;
+    score: number;
+  };
+  total: number;
+  recordMap?: {
+    block: ChildObject<Block>;
+    space?: ChildObject<Space>;
+    collection_view?: ChildObject<CollectionView>;
+    collection?: ChildObject<Collection>;
+  };
+}
+
 export interface DeleteBlocksAPIResp {
   recordMap: DeleteBlocksRecordMap;
   cursor: Cursor;

@@ -3,10 +3,17 @@ import {
   GetSpacesAPIResp,
   LoadCachedPageChunkAPIResp,
   QueryCollectionAPIResp,
+  SearchAPIResp,
 } from "./types/APIResp";
 import { APIs, callAPI } from "./scripts/api";
 import { filterChildObjectValues, filterUsers, parseID } from "./scripts/notionUtils";
-import { DeleteBlocksBody, GetSpacesAPIBody, LoadCachedPageChunkBody, QueryCollectionBody } from "./types/APIBody";
+import {
+  DeleteBlocksBody,
+  GetSpacesAPIBody,
+  LoadCachedPageChunkBody,
+  QueryCollectionBody,
+  SearchBody,
+} from "./types/APIBody";
 import { uniqueArray } from "./scripts/commonUtils";
 import { config } from "dotenv";
 config();
@@ -159,19 +166,44 @@ function main() {
       // });
       // console.log(queryCollectionResp);
 
-      const deleteBlockAPIResp = await callAPI<DeleteBlocksAPIResp, DeleteBlocksBody>({
-        api: APIs.DELETE_BLOCKS,
+      // const deleteBlockAPIResp = await callAPI<DeleteBlocksAPIResp, DeleteBlocksBody>({
+      //   api: APIs.DELETE_BLOCKS,
+      //   userId: user.id,
+      //   body: {
+      //     blocks: [
+      //       {
+      //         id: "72a0e548-352e-4911-a997-5a64d27b841a",
+      //       },
+      //     ],
+      //     permanentlyDelete: false,
+      //   },
+      // });
+      // console.log(deleteBlockAPIResp);
+
+      const searchAPIResp = await callAPI<SearchAPIResp, SearchBody>({
+        api: APIs.SEARCH,
         userId: user.id,
         body: {
-          blocks: [
-            {
-              id: "72a0e548-352e-4911-a997-5a64d27b841a",
-            },
-          ],
-          permanentlyDelete: false,
+          type: "BlocksInSpace",
+          query: "",
+          filters: {
+            isDeletedOnly: false,
+            excludeTemplates: false,
+            isNavigableOnly: true,
+            requireEditPermissions: false,
+            ancestors: [],
+            createdBy: [],
+            editedBy: ['7fcb51d4-8bba-4ae1-ac9c-06fed9842c84'],
+            lastEditedTime: {},
+            createdTime: {},
+          },
+          sort: "Relevance",
+          limit: 20,
+          spaceId: Object.keys(getSpacesAPIResp[user.id].space)[0],
         },
       });
-      // console.log(deleteBlockAPIResp);
+      console.log(searchAPIResp);
+      // console.log(searchAPIResp.recordMap?.block['d51cb254-f9cf-4529-b8fc-4d080af4cee9']);
     } catch (e) {
       console.error(e);
     }

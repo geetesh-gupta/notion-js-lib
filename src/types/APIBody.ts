@@ -37,3 +37,23 @@ export interface DeleteBlocksBody {
   ];
   permanentlyDelete: boolean;
 }
+
+export interface SearchBody {
+  type: "BlocksInSpace";
+  query: "";
+  filters: {
+    isDeletedOnly: boolean;
+    excludeTemplates: boolean;
+    isNavigableOnly: boolean;
+    requireEditPermissions: boolean;
+    ancestors: string[];
+    createdBy: string[];
+    editedBy: string[];
+    lastEditedTime: any;
+    createdTime: any;
+  };
+  sort: string;
+  limit: 20;
+  spaceId: string;
+  source?: string;
+}
