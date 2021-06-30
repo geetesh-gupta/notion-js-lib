@@ -1,18 +1,10 @@
-import { GetSpacesAPIResp, LoadCachedPageChunkAPIResp } from "./types/APIResp";
+import { GetSpacesAPIResp, LoadCachedPageChunkAPIResp, QueryCollectionAPIResp } from "./types/APIResp";
 import { APIs, callAPI } from "./scripts/api";
-import { filterUsers, parseID } from "./scripts/notionUtils";
-import { GetSpacesAPIBody, LoadCachedPageChunkBody } from "./types/APIBody";
+import { filterChildObjectValues, filterUsers, parseID } from "./scripts/notionUtils";
+import { GetSpacesAPIBody, LoadCachedPageChunkBody, QueryCollectionBody } from "./types/APIBody";
 import { uniqueArray } from "./scripts/commonUtils";
 import { config } from "dotenv";
 config();
-
-function renderGetSpace(res: GetSpacesAPIResp) {
-  const users = filterUsers(res);
-  return users.map(({ id, email }) => ({
-    id,
-    email,
-  }));
-}
 
 function removeCommonIds(inpObj) {
   const toRemove = [
@@ -115,25 +107,52 @@ function main() {
   (async () => {
     try {
       const getSpacesAPIResp = await callAPI<GetSpacesAPIResp, GetSpacesAPIBody>({ api: APIs.GET_SPACES });
-      const users = renderGetSpace(getSpacesAPIResp);
-      const user = users.filter((user) => user.email === process.env.EMAIL_ID2)[0];
-      // const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
-      //   api: APIs.LOAD_CACHED_PAGE_CHUNK,
-      //   userId: user.id,
-      //   body: {
-      //     page: {
-      //       id: parseID("78fcbc9287d44476a7c59332a66b49a6"),
-      //     },
-      //     cursor: { stack: [] },
-      //     limit: 30,
-      //     chunkNumber: 0,
-      //     verticalColumns: false,
-      //   },
-      // });
-      // const resp = renderLoadCachedPageChunkForSpaces(cachedPageChunkResp);
+      const users = filterUsers(getSpacesAPIResp);
+      const user = users.filter((user) => user.email === process.env.EMAIL_ID1)[0];
 
-      console.log(getSpacesAPIResp[user.id].space);
-      console.log(getSpacesAPIResp[user.id].space_view);
+      const collectionObj = getSpacesAPIResp[user.id].collection;
+      const collections = filterChildObjectValues(collectionObj);
+      const collectionParentId = collections[0].parent_id;
+      console.log("🚀 ~ file: index.ts ~ line 116 ~ collectionParentId", collectionParentId);
+
+      const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
+        api: APIs.LOAD_CACHED_PAGE_CHUNK,
+        userId: user.id,
+        body: {
+          page: {
+            id: collectionParentId,
+          },
+          cursor: { stack: [] },
+          limit: 30,
+          chunkNumber: 0,
+          verticalColumns: false,
+        },
+      });
+      const collectionViewIds = Object.keys(cachedPageChunkResp.recordMap.collection_view);
+      console.log("🚀 ~ file: index.ts ~ line 132 ~ collectionViewIds", collectionViewIds);
+
+      const queryCollectionResp = await callAPI<QueryCollectionAPIResp, QueryCollectionBody>({
+        api: APIs.QUERY_COLLECTION,
+        userId: user.id,
+        body: {
+          collectionId: collections[0].id,
+          collectionViewId: collectionViewIds[0],
+          query: {},
+          loader: {
+            type: "reducer",
+            reducers: {
+              collection_group_results: {
+                type: "results",
+                limit: 50,
+                loadContentCover: false,
+              },
+            },
+            searchQuery: "",
+            userTimeZone: "Asia/Calcutta",
+          },
+        },
+      });
+      console.log(queryCollectionResp);
     } catch (e) {
       console.error(e);
     }

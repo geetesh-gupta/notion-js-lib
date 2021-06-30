@@ -31,6 +31,12 @@ export enum BlockType {
   Image = "image",
 }
 
+export enum CollectionViewType {
+  List = "list",
+  Table = "table",
+  Gallery = "gallery",
+}
+
 export enum PageCoverType {
   PageCover = "page_cover",
 }

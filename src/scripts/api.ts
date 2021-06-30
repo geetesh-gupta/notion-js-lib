@@ -6,6 +6,7 @@ export enum APIs {
   BASE_URL = "https://www.notion.so/api/v3",
   GET_SPACES = "/getSpaces",
   LOAD_CACHED_PAGE_CHUNK = "/loadCachedPageChunk",
+  QUERY_COLLECTION = "/queryCollection",
 }
 
 export function getRequestOptions(token: string, userId: string = "") {
