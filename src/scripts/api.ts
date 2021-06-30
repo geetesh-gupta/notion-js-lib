@@ -7,6 +7,7 @@ export enum APIs {
   GET_SPACES = "/getSpaces",
   LOAD_CACHED_PAGE_CHUNK = "/loadCachedPageChunk",
   QUERY_COLLECTION = "/queryCollection",
+  DELETE_BLOCKS = "/deleteBlocks"
 }
 
 export function getRequestOptions(token: string, userId: string = "") {

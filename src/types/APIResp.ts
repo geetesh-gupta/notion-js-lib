@@ -6,6 +6,11 @@ import { Space, SpaceView } from "./Spaces";
 
 export type GetSpacesAPIResp = Child<GetSpaceAPIRespChild>;
 
+export interface DeleteBlocksAPIResp {
+  recordMap: DeleteBlocksRecordMap;
+  cursor: Cursor;
+}
+
 export interface LoadCachedPageChunkAPIResp {
   recordMap: CollectionRecordMap;
   cursor: Cursor;
@@ -30,6 +35,10 @@ export type GetSpaceAPIRespChild = {
   block: ChildObject<Block>;
   collection: ChildObject<Collection>;
 };
+
+export interface DeleteBlocksRecordMap {
+  block: ChildObject<Block>;
+}
 
 export interface RecordMap {
   block: ChildObject<Block>;

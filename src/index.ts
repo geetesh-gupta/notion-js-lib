@@ -1,7 +1,12 @@
-import { GetSpacesAPIResp, LoadCachedPageChunkAPIResp, QueryCollectionAPIResp } from "./types/APIResp";
+import {
+  DeleteBlocksAPIResp,
+  GetSpacesAPIResp,
+  LoadCachedPageChunkAPIResp,
+  QueryCollectionAPIResp,
+} from "./types/APIResp";
 import { APIs, callAPI } from "./scripts/api";
 import { filterChildObjectValues, filterUsers, parseID } from "./scripts/notionUtils";
-import { GetSpacesAPIBody, LoadCachedPageChunkBody, QueryCollectionBody } from "./types/APIBody";
+import { DeleteBlocksBody, GetSpacesAPIBody, LoadCachedPageChunkBody, QueryCollectionBody } from "./types/APIBody";
 import { uniqueArray } from "./scripts/commonUtils";
 import { config } from "dotenv";
 config();
@@ -110,49 +115,63 @@ function main() {
       const users = filterUsers(getSpacesAPIResp);
       const user = users.filter((user) => user.email === process.env.EMAIL_ID1)[0];
 
-      const collectionObj = getSpacesAPIResp[user.id].collection;
-      const collections = filterChildObjectValues(collectionObj);
-      const collectionParentId = collections[0].parent_id;
-      console.log("🚀 ~ file: index.ts ~ line 116 ~ collectionParentId", collectionParentId);
+      // const collectionObj = getSpacesAPIResp[user.id].collection;
+      // const collections = filterChildObjectValues(collectionObj);
+      // const collectionParentId = collections[0].parent_id;
+      // console.log("🚀 ~ file: index.ts ~ line 116 ~ collectionParentId", collectionParentId);
 
-      const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
-        api: APIs.LOAD_CACHED_PAGE_CHUNK,
+      // const cachedPageChunkResp = await callAPI<LoadCachedPageChunkAPIResp, LoadCachedPageChunkBody>({
+      //   api: APIs.LOAD_CACHED_PAGE_CHUNK,
+      //   userId: user.id,
+      //   body: {
+      //     page: {
+      //       id: parseID("72a0e548352e4911a9975a64d27b841a"),
+      //     },
+      //     cursor: { stack: [] },
+      //     limit: 30,
+      //     chunkNumber: 0,
+      //     verticalColumns: false,
+      //   },
+      // });
+      // const collectionViewIds = Object.keys(cachedPageChunkResp.recordMap.collection_view);
+      // // console.log("🚀 ~ file: index.ts ~ line 132 ~ collectionViewIds", collectionViewIds);
+
+      // const queryCollectionResp = await callAPI<QueryCollectionAPIResp, QueryCollectionBody>({
+      //   api: APIs.QUERY_COLLECTION,
+      //   userId: user.id,
+      //   body: {
+      //     collectionId: collections[0].id,
+      //     collectionViewId: collectionViewIds[0],
+      //     query: {},
+      //     loader: {
+      //       type: "reducer",
+      //       reducers: {
+      //         collection_group_results: {
+      //           type: "results",
+      //           limit: 50,
+      //           loadContentCover: false,
+      //         },
+      //       },
+      //       searchQuery: "",
+      //       userTimeZone: "Asia/Calcutta",
+      //     },
+      //   },
+      // });
+      // console.log(queryCollectionResp);
+
+      const deleteBlockAPIResp = await callAPI<DeleteBlocksAPIResp, DeleteBlocksBody>({
+        api: APIs.DELETE_BLOCKS,
         userId: user.id,
         body: {
-          page: {
-            id: collectionParentId,
-          },
-          cursor: { stack: [] },
-          limit: 30,
-          chunkNumber: 0,
-          verticalColumns: false,
-        },
-      });
-      const collectionViewIds = Object.keys(cachedPageChunkResp.recordMap.collection_view);
-      console.log("🚀 ~ file: index.ts ~ line 132 ~ collectionViewIds", collectionViewIds);
-
-      const queryCollectionResp = await callAPI<QueryCollectionAPIResp, QueryCollectionBody>({
-        api: APIs.QUERY_COLLECTION,
-        userId: user.id,
-        body: {
-          collectionId: collections[0].id,
-          collectionViewId: collectionViewIds[0],
-          query: {},
-          loader: {
-            type: "reducer",
-            reducers: {
-              collection_group_results: {
-                type: "results",
-                limit: 50,
-                loadContentCover: false,
-              },
+          blocks: [
+            {
+              id: "72a0e548-352e-4911-a997-5a64d27b841a",
             },
-            searchQuery: "",
-            userTimeZone: "Asia/Calcutta",
-          },
+          ],
+          permanentlyDelete: false,
         },
       });
-      console.log(queryCollectionResp);
+      // console.log(deleteBlockAPIResp);
     } catch (e) {
       console.error(e);
     }

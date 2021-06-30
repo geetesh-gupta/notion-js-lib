@@ -27,3 +27,13 @@ export interface QueryCollectionBody {
     userTimeZone: "Asia/Calcutta";
   };
 }
+
+export interface DeleteBlocksBody {
+  blocks: [
+    {
+      id: string;
+      spaceId?: string;
+    },
+  ];
+  permanentlyDelete: boolean;
+}
